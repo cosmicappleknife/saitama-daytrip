@@ -3,180 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>埼玉デイトリップ｜温泉・町中華・工場直売</title>
+<title>埼玉デイトリップ｜温泉・町中華・直売所</title>
 
 <!-- 検索回避 -->
 <meta name="robots" content="noindex, nofollow">
 
 <style>
-/* ===== base ===== */
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:#fafafa;
-  margin:0;
-  padding:40px 0;
-  color:#111;
-}
-.wrap{
-  width:92%;
-  max-width:980px;
-  margin:auto;
-}
-.header h1{
-  margin:0 0 8px 0;
-  font-size:1.8rem;
-}
-.header p{
-  margin:0;
-  color:#555;
-  line-height:1.6;
-}
-.meta{
-  margin-top:14px;
-  display:flex;
-  gap:10px;
-}
-.btn{
-  display:inline-block;
-  padding:8px 12px;
-  border:1px solid #ddd;
-  border-radius:12px;
-  background:#fff;
-  color:#111;
-  text-decoration:none;
-  font-size:.9em;
-}
-.btn:hover{border-color:#bbb;}
+  :root{
+    --wrap-max: 980px;
+    --time-col: 130px;   /* 左の時刻列幅 */
+    --axis-col: 34px;    /* 縦軸列幅（ドットが載る列） */
+    --gap: 16px;
 
-/* ===== timeline ===== */
-.timeline{
-  position:relative;
-  margin-top:36px;
-}
-.timeline::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:0;
-  bottom:0;
-  width:2px;
-  background:#ccc;
-  transform:translateX(-50%);
-}
-.event{
-  position:relative;
-  width:50%;
-  padding:20px 40px;
-  box-sizing:border-box;
-}
-.event.left{
-  left:0;
-  text-align:right;
-}
-.event.right{
-  left:50%;
-  text-align:left;
-}
-.event::before{
-  content:"";
-  position:absolute;
-  top:30px;
-  width:14px;
-  height:14px;
-  background:#fff;
-  border:3px solid #333;
-  border-radius:50%;
-  z-index:2;
-}
-.event.left::before{right:-7px;}
-.event.right::before{left:-7px;}
+    --line-color: #ccc;
+    --text-sub: #666;
+    --card-border: #eee;
+    --bg: #fafafa;
+  }
 
-.time{
-  font-size:.9em;
-  color:#666;
-  margin-bottom:6px;
-}
-.title{
-  font-weight:700;
-  font-size:1.1em;
-  margin-bottom:6px;
-}
-.desc{
-  font-size:.95em;
-  line-height:1.65;
-}
-.photo{
-  margin-top:10px;
-  border-radius:14px;
-  overflow:hidden;
-  border:1px solid #eee;
-  background:#fff;
-}
-.photo img{width:100%;display:block;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    margin:0;
+    padding:32px 0;
+    color:#111;
+  }
 
-/* ===== category colors ===== */
-.event.onsen::before{
-  background:#f39c12;
-  border-color:#f39c12;
-}
-.event.chinese::before{
-  background:#e74c3c;
-  border-color:#e74c3c;
-}
-.event.factory::before{
-  background:#e84393;
-  border-color:#e84393;
-}
-.event.meat::before{
-  background:#f1c40f;
-  border-color:#f1c40f;
-}
+  .wrap{
+    width:92%;
+    max-width: var(--wrap-max);
+    margin:auto;
+  }
 
-/* ===== anchor (start / finish) ===== */
-.event.anchor::before{
-  background:#2ecc71;
-  border-color:#2ecc71;
-  width:18px;
-  height:18px;
-  border-width:4px;
-}
-.event.anchor .desc,
-.event.anchor .photo,
-.event.anchor .meta{display:none;}
+  .header h1{
+    margin:0 0 8px 0;
+    font-size:1.8rem;
+  }
+  .header p{
+    margin:0;
+    color:#555;
+    line-height:1.6;
+  }
 
-.badge{
-  display:inline-block;
-  margin-left:8px;
-  padding:2px 6px;
-  font-size:.75em;
-  letter-spacing:.08em;
-  border-radius:6px;
-  color:#2ecc71;
-  border:1px solid #2ecc71;
-  background:#f6fffb;
-}
+  .top-actions{
+    margin-top:14px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
 
-/* ===== mobile (1 column) ===== */
-@media (max-width:768px){
+  .btn{
+    display:inline-block;
+    padding:8px 12px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fff;
+    color:#111;
+    text-decoration:none;
+    font-size:.9em;
+    line-height:1.2;
+  }
+  .btn:hover{ border-color:#bbb; }
+
+  /* ===== Timeline base ===== */
+  .timeline{
+    position:relative;
+    margin-top:28px;
+    padding: 6px 0 10px 0;
+  }
+
+  /* 縦ライン（タイムライン全体で1本） */
   .timeline::before{
-    left:22px;
-    transform:none;
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:0;
+    left: calc(var(--time-col) + (var(--axis-col) / 2));
+    width:2px;
+    background: var(--line-color);
   }
-  .event,
-  .event.left,
-  .event.right{
-    width:100%;
-    left:0;
-    padding:16px 14px 16px 54px;
-    text-align:left;
+
+  /* 各イベント：左=時刻 / 中=軸 / 右=内容 の3カラム */
+  .event{
+    position:relative;
+    display:grid;
+    grid-template-columns: var(--time-col) var(--axis-col) 1fr;
+    column-gap: var(--gap);
+    padding: 14px 0;
   }
-  .event::before{
-    left:15px;
-    right:auto;
-    top:28px;
+
+  .time{
+    text-align:right;
+    font-size:.92em;
+    color: var(--text-sub);
+    padding-top: 2px;
+    white-space:nowrap;
   }
-  .meta{justify-content:flex-start;}
-}
+
+  .axis{
+    position:relative;
+  }
+
+  /* 丸ポチ（ドット）— 軸列の中央に固定（ズレにくい） */
+  .dot{
+    position:sticky; /* iOSでも安定しやすい。相対配置を減らす */
+    top: 0;
+    display:block;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    border:3px solid #333;
+    background:#fff;
+    margin: 2px auto 0 auto; /* 軸列のど真ん中 */
+    box-sizing: border-box;
+  }
+
+  .content{
+    padding-bottom: 4px;
+  }
+
+  .title{
+    font-weight:700;
+    font-size:1.08em;
+    margin:0 0 6px 0;
+  }
+
+  .desc{
+    margin:0;
+    font-size:.95em;
+    line-height:1.65;
+    color:#222;
+  }
+
+  .actions{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .badge{
+    display:inline-block;
+    margin-left:8px;
+    padding:2px 6px;
+    font-size:.75em;
+    letter-spacing:.08em;
+    border-radius:6px;
+    vertical-align:middle;
+  }
+
+  /* ===== Category colors (dots) ===== */
+  .onsen .dot{
+    border-color:#f39c12;
+    background:#f39c12;
+  }
+  .chinese .dot{
+    border-color:#e74c3c;
+    background:#e74c3c;
+  }
+  .factory .dot{
+    border-color:#e84393;
+    background:#e84393;
+  }
+  .meat .dot{
+    border-color:#f1c40f;   /* yellow */
+    background:#f1c40f;
+  }
+
+  /* ===== Anchor (start/finish) ===== */
+  .anchor .dot{
+    width:18px;
+    height:18px;
+    border-width:4px;
+    border-color:#2ecc71;
+    background:#2ecc71;
+    margin-top: 0;
+  }
+  .anchor .badge{
+    color:#2ecc71;
+    border:1px solid #2ecc71;
+    background:#f6fffb;
+  }
+  /* anchorは店名だけ：説明・ボタンなし */
+  .anchor .desc,
+  .anchor .actions{
+    display:none;
+  }
+
+  /* ===== Mobile: columns adjust (still time-left / info-right) ===== */
+  @media (max-width: 520px){
+    :root{
+      --time-col: 92px; /* 狭い画面では時刻列を縮める */
+      --axis-col: 30px;
+      --gap: 12px;
+    }
+    .title{ font-size:1.03em; }
+    .desc{ font-size:.93em; }
+  }
 </style>
 </head>
 
@@ -185,9 +208,11 @@ body{
 
   <div class="header">
     <h1>埼玉デイトリップ</h1>
-    <p>朝風呂から始まり、町中華と工場直売所を巡って生活に戻る一日。</p>
-    <div class="meta">
-      <a class="btn" href="https://www.google.com/maps/d/u/0/viewer?mid=1LtEg0fzZxiQUp6uRsTT2oBN_aaOKpwU&ll=35.838040580695875%2C139.67532014017343&z=12"
+    <p>朝風呂 → 町中華 → 直売所 → 精肉惣菜で締める（下道）</p>
+
+    <div class="top-actions">
+      <a class="btn"
+         href="https://www.google.com/maps/d/u/0/viewer?mid=1LtEg0fzZxiQUp6uRsTT2oBN_aaOKpwU&ll=35.838040580695875%2C139.67532014017343&z=12"
          target="_blank" rel="noopener">
         全体ルート（Googleマップ）
       </a>
@@ -197,101 +222,108 @@ body{
   <div class="timeline">
 
     <!-- START -->
-    <div class="event left anchor">
+    <div class="event anchor">
       <div class="time">07:30（出発）</div>
-      <div class="title">
-        セブンイレブン（足立区新田）
-        <span class="badge">START</span>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">セブンイレブン（足立区新田）<span class="badge">START</span></div>
       </div>
     </div>
 
-    <!-- SPA -->
-    <div class="event right onsen">
-      <div class="time">09:00 – 11:00</div>
-      <div class="title">美楽温泉 SPA-HERBS</div>
-      <div class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <!-- Onsen -->
+    <div class="event onsen">
+      <div class="time">09:00–11:00</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">美楽温泉 SPA-HERBS</div>
+        <p class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
-    <!-- CHINESE -->
-    <div class="event left chinese">
-      <div class="time">11:40 – 12:40</div>
-      <div class="title">漫々亭（町中華）</div>
-      <div class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <!-- Chinese -->
+    <div class="event chinese">
+      <div class="time">11:40–12:40</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">漫々亭（町中華）</div>
+        <p class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
-    <!-- FACTORY -->
-    <div class="event right factory">
-      <div class="time">13:10 – 13:30</div>
-      <div class="title">文明堂 さいたまあおぞら工房</div>
-      <div class="desc">工房併設の直売所。戦利品作りの核。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <!-- Factory series -->
+    <div class="event factory">
+      <div class="time">13:10–13:30</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">文明堂 さいたまあおぞら工房</div>
+        <p class="desc">工房併設の直売所。戦利品作りの核（滞在20分）。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
-    <div class="event left factory">
-      <div class="time">13:45 – 14:15</div>
-      <div class="title">舟和 浜和工場直売店</div>
-      <div class="desc">和菓子直売の定番。品数前提で滞在長め。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <div class="event factory">
+      <div class="time">13:45–14:15</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">舟和 浜和工場直売店</div>
+        <p class="desc">和菓子直売の定番。品数前提で滞在長め（30分）。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
-    <div class="event right factory">
-      <div class="time">14:30 – 14:40</div>
-      <div class="title">三恵商事（有）</div>
-      <div class="desc">ローカル直売枠。短時間で流す。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <div class="event factory">
+      <div class="time">14:30–14:40</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">三恵商事（有）</div>
+        <p class="desc">ローカル直売枠。短時間で流す（10分）。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
-    <div class="event left factory">
-      <div class="time">14:55 – 15:05</div>
-      <div class="title">和菓子 くり太郎本舗 清月</div>
-      <div class="desc">栗系和菓子の直営販売所。最終調整。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <div class="event factory">
+      <div class="time">14:55–15:05</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">和菓子 くり太郎本舗 清月</div>
+        <p class="desc">栗系和菓子の直営販売所。最終調整（10分）。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
-    <!-- MEAT -->
-    <div class="event right factory meat">
-      <div class="time">15:35 – 15:45</div>
-      <div class="title">ミート目黒</div>
-      <div class="desc">惣菜・精肉を購入して帰路へ。</div>
-      <div class="meta">
-        <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">
-          Googleマップ
-        </a>
+    <!-- Meat (yellow dot) -->
+    <div class="event meat">
+      <div class="time">15:35–15:45</div>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">ミート目黒</div>
+        <p class="desc">惣菜・精肉を購入して帰路へ（10分）。</p>
+        <div class="actions">
+          <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">Googleマップ</a>
+        </div>
       </div>
     </div>
 
     <!-- FINISH -->
-    <div class="event left anchor">
+    <div class="event anchor">
       <div class="time">16:30（帰着・仮）</div>
-      <div class="title">
-        セブンイレブン（足立区新田）
-        <span class="badge">FINISH</span>
+      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="content">
+        <div class="title">セブンイレブン（足立区新田）<span class="badge">FINISH</span></div>
       </div>
     </div>
 

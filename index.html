@@ -142,4 +142,160 @@ body{
 }
 .event.anchor .desc,
 .event.anchor .photo,
-.event.anchor .meta{disp
+.event.anchor .meta{display:none;}
+
+.badge{
+  display:inline-block;
+  margin-left:8px;
+  padding:2px 6px;
+  font-size:.75em;
+  letter-spacing:.08em;
+  border-radius:6px;
+  color:#2ecc71;
+  border:1px solid #2ecc71;
+  background:#f6fffb;
+}
+
+/* ===== mobile (1 column) ===== */
+@media (max-width:768px){
+  .timeline::before{
+    left:22px;
+    transform:none;
+  }
+  .event,
+  .event.left,
+  .event.right{
+    width:100%;
+    left:0;
+    padding:16px 14px 16px 54px;
+    text-align:left;
+  }
+  .event::before{
+    left:15px;
+    right:auto;
+    top:28px;
+  }
+  .meta{justify-content:flex-start;}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>埼玉デイトリップ</h1>
+    <p>朝風呂から始まり、町中華と工場直売所を巡って生活に戻る一日。</p>
+    <div class="meta">
+      <a class="btn" href="https://www.google.com/maps/d/u/0/viewer?mid=1LtEg0fzZxiQUp6uRsTT2oBN_aaOKpwU&ll=35.838040580695875%2C139.67532014017343&z=12"
+         target="_blank" rel="noopener">
+        全体ルート（Googleマップ）
+      </a>
+    </div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- START -->
+    <div class="event left anchor">
+      <div class="time">07:30（出発）</div>
+      <div class="title">
+        セブンイレブン（足立区新田）
+        <span class="badge">START</span>
+      </div>
+    </div>
+
+    <!-- SPA -->
+    <div class="event right onsen">
+      <div class="time">09:00 – 11:00</div>
+      <div class="title">美楽温泉 SPA-HERBS</div>
+      <div class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <!-- CHINESE -->
+    <div class="event left chinese">
+      <div class="time">11:40 – 12:40</div>
+      <div class="title">漫々亭（町中華）</div>
+      <div class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <!-- FACTORY -->
+    <div class="event right factory">
+      <div class="time">13:10 – 13:30</div>
+      <div class="title">文明堂 さいたまあおぞら工房</div>
+      <div class="desc">工房併設の直売所。戦利品作りの核。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <div class="event left factory">
+      <div class="time">13:45 – 14:15</div>
+      <div class="title">舟和 浜和工場直売店</div>
+      <div class="desc">和菓子直売の定番。品数前提で滞在長め。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <div class="event right factory">
+      <div class="time">14:30 – 14:40</div>
+      <div class="title">三恵商事（有）</div>
+      <div class="desc">ローカル直売枠。短時間で流す。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <div class="event left factory">
+      <div class="time">14:55 – 15:05</div>
+      <div class="title">和菓子 くり太郎本舗 清月</div>
+      <div class="desc">栗系和菓子の直営販売所。最終調整。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <!-- MEAT -->
+    <div class="event right factory meat">
+      <div class="time">15:35 – 15:45</div>
+      <div class="title">ミート目黒</div>
+      <div class="desc">惣菜・精肉を購入して帰路へ。</div>
+      <div class="meta">
+        <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">
+          Googleマップ
+        </a>
+      </div>
+    </div>
+
+    <!-- FINISH -->
+    <div class="event left anchor">
+      <div class="time">16:30（帰着・仮）</div>
+      <div class="title">
+        セブンイレブン（足立区新田）
+        <span class="badge">FINISH</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

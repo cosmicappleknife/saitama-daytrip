@@ -23,8 +23,8 @@
     --dot-stroke: 5px;
 
     /* typography */
-    --title-size: 1.08rem;  /* 店名 */
-    --time-size:  1.08rem;  /* 時刻（店名と同サイズ） */
+    --title-size: 1.08rem;
+    --time-size:  1.08rem;
     --desc-size:  0.95rem;
 
     /* colors */
@@ -32,6 +32,15 @@
     --text: #111;
     --sub: #555;
     --line: #cfcfcf;
+
+    /* bubble */
+    --bubble-bg: #ffffff;
+    --bubble-border: #e7e7e7;
+    --bubble-radius: 18px;
+    --bubble-pad-y: 14px;
+    --bubble-pad-x: 16px;
+    --bubble-shadow: 0 10px 30px rgba(0,0,0,.06);
+    --tail-size: 10px;
   }
 
   body{
@@ -83,8 +92,6 @@
     position:relative;
     margin-top:28px;
     padding: 6px 0 10px 0;
-
-    /* 軸の中心X（これを縦線と丸ポチの共通基準にする） */
     --axis-x: calc(var(--time-col) + (var(--axis-col) / 2));
   }
 
@@ -100,7 +107,7 @@
   }
 
   .event{
-    position:relative; /* ←丸ポチのabsolute基準 */
+    position:relative;
     display:grid;
     grid-template-columns: var(--time-col) var(--axis-col) 1fr;
     column-gap: var(--gap);
@@ -116,10 +123,9 @@
     padding-top: 2px;
   }
 
-  /* 軸列は「スペーサー」。positionは付けない（重要） */
   .axis{ }
 
-  /* 丸ポチは event を基準に、縦線と同じ --axis-x に配置 */
+  /* dot: centered on the same axis-x as the line */
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
@@ -127,10 +133,10 @@
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
-    background: #fff;                         /* 白抜き */
-    border: var(--dot-stroke) solid #333;     /* 太線 */
+    background: #fff;
+    border: var(--dot-stroke) solid #333;
     box-sizing: border-box;
-    z-index: 2;                               /* 縦線より前 */
+    z-index: 2;
   }
 
   .content{
@@ -168,6 +174,46 @@
     vertical-align:middle;
   }
 
+  /* ===== Bubble (right side) ===== */
+  .bubble{
+    position:relative;
+    background: var(--bubble-bg);
+    border: 1px solid var(--bubble-border);
+    border-radius: var(--bubble-radius);
+    padding: var(--bubble-pad-y) var(--bubble-pad-x);
+    box-shadow: var(--bubble-shadow);
+  }
+
+  /* tail with border */
+  .bubble::before{
+    content:"";
+    position:absolute;
+    left: calc(-1 * var(--tail-size));
+    top: 22px;
+    width: 0;
+    height: 0;
+    border-top: var(--tail-size) solid transparent;
+    border-bottom: var(--tail-size) solid transparent;
+    border-right: var(--tail-size) solid var(--bubble-border);
+  }
+
+  /* tail fill */
+  .bubble::after{
+    content:"";
+    position:absolute;
+    left: calc(-1 * var(--tail-size) + 1px);
+    top: 22px;
+    width: 0;
+    height: 0;
+    border-top: var(--tail-size) solid transparent;
+    border-bottom: var(--tail-size) solid transparent;
+    border-right: var(--tail-size) solid var(--bubble-bg);
+  }
+
+  /* tighten inside bubble */
+  .bubble .title{ margin-bottom: 8px; }
+  .bubble .actions{ margin-top: 12px; }
+
   /* ===== category colors (stroke only; fill stays white) ===== */
   .onsen  .dot{ border-color:#f39c12; }
   .chinese .dot{ border-color:#e74c3c; }
@@ -188,24 +234,31 @@
     background:#f6fffb;
   }
 
+  /* anchor: no bubble, no desc/actions */
   .anchor .desc,
-  .anchor .actions{
-    display:none;
-  }
+  .anchor .actions{ display:none; }
 
   @media (max-width: 520px){
     :root{
       --time-col: 108px;
       --axis-col: 30px;
       --gap: 12px;
+
       --title-size: 1.02rem;
       --time-size:  1.02rem;
       --desc-size:  0.93rem;
+
       --dot-size: 16px;
       --dot-stroke: 5px;
+
+      --bubble-radius: 16px;
+      --bubble-pad-y: 12px;
+      --bubble-pad-x: 14px;
+      --tail-size: 9px;
     }
     .dot{ top: 14px; }
     .anchor .dot{ top: 12px; }
+    .bubble::before, .bubble::after{ top: 18px; }
   }
 </style>
 </head>
@@ -238,10 +291,12 @@
       <div class="time">09:00–11:00</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">美楽温泉 SPA-HERBS</div>
-        <p class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">美楽温泉 SPA-HERBS</div>
+          <p class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>
@@ -251,10 +306,12 @@
       <div class="time">11:40–12:40</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">漫々亭（町中華）</div>
-        <p class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">漫々亭（町中華）</div>
+          <p class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>
@@ -264,10 +321,12 @@
       <div class="time">13:10–13:30</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">文明堂 さいたまあおぞら工房</div>
-        <p class="desc">工房併設の直売所。戦利品作りの核（滞在20分）。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">文明堂 さいたまあおぞら工房</div>
+          <p class="desc">工房併設の直売所。戦利品作りの核（滞在20分）。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>
@@ -277,10 +336,12 @@
       <div class="time">13:45–14:15</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">舟和 浜和工場直売店</div>
-        <p class="desc">和菓子直売の定番。品数前提で滞在長め（30分）。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">舟和 浜和工場直売店</div>
+          <p class="desc">和菓子直売の定番。品数前提で滞在長め（30分）。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>
@@ -290,10 +351,12 @@
       <div class="time">14:30–14:40</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">三恵商事（有）</div>
-        <p class="desc">ローカル直売枠。短時間で流す（10分）。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">三恵商事（有）</div>
+          <p class="desc">ローカル直売枠。短時間で流す（10分）。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>
@@ -303,10 +366,12 @@
       <div class="time">14:55–15:05</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">和菓子 くり太郎本舗 清月</div>
-        <p class="desc">栗系和菓子の直営販売所。最終調整（10分）。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">和菓子 くり太郎本舗 清月</div>
+          <p class="desc">栗系和菓子の直営販売所。最終調整（10分）。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>
@@ -316,10 +381,12 @@
       <div class="time">15:35–15:45</div>
       <div class="axis"></div>
       <div class="content">
-        <div class="title">ミート目黒</div>
-        <p class="desc">惣菜・精肉を購入して帰路へ（10分）。</p>
-        <div class="actions">
-          <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">Googleマップ</a>
+        <div class="bubble">
+          <div class="title">ミート目黒</div>
+          <p class="desc">惣菜・精肉を購入して帰路へ（10分）。</p>
+          <div class="actions">
+            <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">Googleマップ</a>
+          </div>
         </div>
       </div>
       <span class="dot" aria-hidden="true"></span>

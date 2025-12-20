@@ -47,8 +47,8 @@
     /* dot vertical adjustment */
     --dot-y-shift: 15px;
 
-    /* thumbnail */
-    --thumb-h: 120px;
+    /* thumbnail (1 image per spot) */
+    --thumb-h: 110px;
     --thumb-radius: 12px;
   }
 
@@ -191,7 +191,7 @@
     border-right: var(--tail-size) solid var(--bubble-bg);
   }
 
-  /* ===== Thumbnail ===== */
+  /* ===== Thumbnail (single image) ===== */
   .thumb{
     display:block;
     margin: 10px 0 10px 0;
@@ -206,6 +206,9 @@
     width:100%;
     height: var(--thumb-h);
     object-fit: cover;
+
+    /* ✅ perceived sharpness on mobile */
+    image-rendering: auto;
   }
 
   /* ===== Category colors ===== */
@@ -249,6 +252,7 @@
   .anchor .desc,
   .anchor .actions{ display:none; }
 
+  /* ✅ Mobile: thumbnail smaller */
   @media (max-width: 520px){
     :root{
       --time-col: 108px;
@@ -272,7 +276,8 @@
 
       --dot-y-shift: 15px;
 
-      --thumb-h: 104px;
+      /* ✅ smaller on phone */
+      --thumb-h: 84px;
       --thumb-radius: 11px;
     }
     .anchor .dot{ top: 12px; }
@@ -312,7 +317,6 @@
           <div class="title">美楽温泉 SPA-HERBS</div>
           <p class="desc">（ここはあなたが更新）</p>
 
-          <!-- ✅ サムネ：hrefは「クリックで原寸表示」用、srcは表示用 -->
           <a class="thumb" href="assets/img/spa-herbs.jpg" target="_blank" rel="noopener">
             <img src="assets/img/spa-herbs.jpg" alt="美楽温泉 SPA-HERBS" loading="lazy" decoding="async">
           </a>

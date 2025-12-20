@@ -191,7 +191,7 @@
     border-right: var(--tail-size) solid var(--bubble-bg);
   }
 
-  /* ===== Thumbnail (single image) ===== */
+  /* ===== Thumbnail (WebP優先 + JPGフォールバック / 各スポット1枚) ===== */
   .thumb{
     display:block;
     margin: 10px 0 10px 0;
@@ -201,14 +201,13 @@
     background: rgba(255,255,255,.65);
     text-decoration:none;
   }
-  .thumb img{
+  .thumb picture, .thumb img{
     display:block;
     width:100%;
     height: var(--thumb-h);
+  }
+  .thumb img{
     object-fit: cover;
-
-    /* ✅ perceived sharpness on mobile */
-    image-rendering: auto;
   }
 
   /* ===== Category colors ===== */
@@ -276,7 +275,6 @@
 
       --dot-y-shift: 15px;
 
-      /* ✅ smaller on phone */
       --thumb-h: 84px;
       --thumb-radius: 11px;
     }
@@ -318,7 +316,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/spa-herbs.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/spa-herbs.jpg" alt="美楽温泉 SPA-HERBS" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/spa-herbs.webp" type="image/webp">
+              <img src="assets/img/spa-herbs.jpg" alt="美楽温泉 SPA-HERBS" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">
@@ -338,7 +339,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/manmantei.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/manmantei.jpg" alt="漫々亭" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/manmantei.webp" type="image/webp">
+              <img src="assets/img/manmantei.jpg" alt="漫々亭" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">
@@ -358,7 +362,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/bummeido.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/bummeido.jpg" alt="文明堂 さいたまあおぞら工房" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/bummeido.webp" type="image/webp">
+              <img src="assets/img/bummeido.jpg" alt="文明堂 さいたまあおぞら工房" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">
@@ -378,7 +385,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/funawa.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/funawa.jpg" alt="舟和 浜和工場直売店" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/funawa.webp" type="image/webp">
+              <img src="assets/img/funawa.jpg" alt="舟和 浜和工場直売店" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">
@@ -398,7 +408,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/sanke.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/sanke.jpg" alt="三恵商事" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/sanke.webp" type="image/webp">
+              <img src="assets/img/sanke.jpg" alt="三恵商事（有）" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">
@@ -418,7 +431,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/kuritaro.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/kuritaro.jpg" alt="くり太郎本舗 清月" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/kuritaro.webp" type="image/webp">
+              <img src="assets/img/kuritaro.jpg" alt="和菓子 くり太郎本舗 清月" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">
@@ -438,7 +454,10 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/meat-meguro.jpg" target="_blank" rel="noopener">
-            <img src="assets/img/meat-meguro.jpg" alt="ミート目黒" loading="lazy" decoding="async">
+            <picture>
+              <source srcset="assets/img/meat-meguro.webp" type="image/webp">
+              <img src="assets/img/meat-meguro.jpg" alt="ミート目黒" loading="lazy" decoding="async" fetchpriority="low">
+            </picture>
           </a>
 
           <div class="actions">

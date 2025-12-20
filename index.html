@@ -206,9 +206,7 @@
     width:100%;
     height: var(--thumb-h);
   }
-  .thumb img{
-    object-fit: cover;
-  }
+  .thumb img{ object-fit: cover; }
 
   /* ===== Category colors ===== */
   .onsen{
@@ -232,12 +230,13 @@
   }
   .factory .dot{ border-color:#e84393; }
 
+  /* ✅ meat: yellow → brown (distinct from onsen) */
   .meat{
-    --bubble-bg: #fff9d6;
-    --bubble-border: rgba(241,196,15,.25);
-    --tail-border: rgba(241,196,15,.25);
+    --bubble-bg: #f3e7db;               /* 薄茶色 */
+    --bubble-border: rgba(139, 69, 19, .22);
+    --tail-border: rgba(139, 69, 19, .22);
   }
-  .meat .dot{ border-color:#f1c40f; }
+  .meat .dot{ border-color:#8b4513; }   /* 茶色（白抜きは背景が白なのでそのまま） */
 
   /* ===== start/finish ===== */
   .anchor{ --dot-y-shift: 0px; }

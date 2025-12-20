@@ -45,8 +45,12 @@
     --time-pad: 24px;
     --time-line: 21px;
 
-    /* ✅ dot vertical adjustment (your tuning) */
-    --dot-y-shift: 15px; /* ←丸ポチを下げる量 */
+    /* dot vertical adjustment (your tuning) */
+    --dot-y-shift: 15px;
+
+    /* photo in bubble */
+    --photo-h: 110px;
+    --photo-radius: 12px;
   }
 
   body{
@@ -139,7 +143,6 @@
 
   .axis{ }
 
-  /* dot: aligned to mark-y, then shifted down by your tuning */
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
@@ -198,12 +201,11 @@
     box-shadow: var(--bubble-shadow);
   }
 
-  /* tail with border */
   .bubble::before{
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size));
-    top: calc(var(--mark-y) - var(--tail-size)); /* tail aligns to mark-y */
+    top: calc(var(--mark-y) - var(--tail-size));
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -211,7 +213,6 @@
     border-right: var(--tail-size) solid var(--tail-border);
   }
 
-  /* tail fill */
   .bubble::after{
     content:"";
     position:absolute;
@@ -227,39 +228,59 @@
   .bubble .title{ margin-bottom: 8px; }
   .bubble .actions{ margin-top: 12px; }
 
+  /* photo */
+  .photo{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: var(--photo-radius);
+    overflow:hidden;
+    border: 1px solid rgba(0,0,0,.10);
+    background: rgba(255,255,255,.55);
+  }
+  .photo img{
+    display:block;
+    width:100%;
+    height: var(--photo-h);
+    object-fit: cover;
+  }
+  .photo .caption{
+    font-size: .82rem;
+    color: rgba(0,0,0,.55);
+    padding: 6px 10px;
+    line-height: 1.3;
+  }
+
   /* ===== Category colors ===== */
   .onsen{
-    --bubble-bg: #fff4e1;               /* 薄いオレンジ */
+    --bubble-bg: #fff4e1;
     --bubble-border: rgba(243,156,18,.25);
     --tail-border: rgba(243,156,18,.25);
   }
   .onsen .dot{ border-color:#f39c12; }
 
   .chinese{
-    --bubble-bg: #ffe8e6;               /* 薄い赤 */
+    --bubble-bg: #ffe8e6;
     --bubble-border: rgba(231,76,60,.25);
     --tail-border: rgba(231,76,60,.25);
   }
   .chinese .dot{ border-color:#e74c3c; }
 
   .factory{
-    --bubble-bg: #ffe7f2;               /* 薄いピンク */
+    --bubble-bg: #ffe7f2;
     --bubble-border: rgba(232,67,147,.22);
     --tail-border: rgba(232,67,147,.22);
   }
   .factory .dot{ border-color:#e84393; }
 
   .meat{
-    --bubble-bg: #fff9d6;               /* 薄い黄色 */
+    --bubble-bg: #fff9d6;
     --bubble-border: rgba(241,196,15,.25);
     --tail-border: rgba(241,196,15,.25);
   }
   .meat .dot{ border-color:#f1c40f; }
 
   /* ===== start/finish (no bubble; revert dot/time height) ===== */
-  .anchor{
-    --dot-y-shift: 0px;                 /* START/FINISH は元の高さへ戻す */
-  }
+  .anchor{ --dot-y-shift: 0px; }
   .anchor .time{
     padding-top: 2px;
     line-height: 1.2;
@@ -268,7 +289,7 @@
     --dot-size: 22px;
     --dot-stroke: 6px;
     border-color:#2ecc71;
-    top: 14px;                          /* 元々の高さ */
+    top: 14px;
   }
   .anchor .badge{
     color:#2ecc71;
@@ -299,11 +320,12 @@
       --time-pad: 22px;
       --time-line: 20px;
 
-      --dot-y-shift: 15px;              /* 同じく +15px */
+      --dot-y-shift: 15px;
+
+      --photo-h: 96px;
+      --photo-radius: 11px;
     }
-    .anchor .dot{
-      top: 12px;
-    }
+    .anchor .dot{ top: 12px; }
   }
 </style>
 </head>
@@ -338,7 +360,14 @@
       <div class="content">
         <div class="bubble">
           <div class="title">美楽温泉 SPA-HERBS</div>
-          <p class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <!-- ✅ 写真（サンプル）：一言説明と地図ボタンの間に入れる -->
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb210d2?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">Googleマップ</a>
           </div>
@@ -353,7 +382,13 @@
       <div class="content">
         <div class="bubble">
           <div class="title">漫々亭（町中華）</div>
-          <p class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">Googleマップ</a>
           </div>
@@ -368,7 +403,13 @@
       <div class="content">
         <div class="bubble">
           <div class="title">文明堂 さいたまあおぞら工房</div>
-          <p class="desc">工房併設の直売所。戦利品作りの核（滞在20分）。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">Googleマップ</a>
           </div>
@@ -383,7 +424,13 @@
       <div class="content">
         <div class="bubble">
           <div class="title">舟和 浜和工場直売店</div>
-          <p class="desc">和菓子直売の定番。品数前提で滞在長め（30分）。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">Googleマップ</a>
           </div>
@@ -398,7 +445,13 @@
       <div class="content">
         <div class="bubble">
           <div class="title">三恵商事（有）</div>
-          <p class="desc">ローカル直売枠。短時間で流す（10分）。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">Googleマップ</a>
           </div>
@@ -413,7 +466,13 @@
       <div class="content">
         <div class="bubble">
           <div class="title">和菓子 くり太郎本舗 清月</div>
-          <p class="desc">栗系和菓子の直営販売所。最終調整（10分）。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1528826194825-4dbd7d8d3b46?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">Googleマップ</a>
           </div>
@@ -428,7 +487,13 @@
       <div class="content">
         <div class="bubble">
           <div class="title">ミート目黒</div>
-          <p class="desc">惣菜・精肉を購入して帰路へ（10分）。</p>
+          <p class="desc">（ここはあなたが更新）</p>
+
+          <a class="photo" href="https://example.com/your-photo-link.jpg" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1604908554162-45f0a32a3a59?auto=format&fit=crop&w=1200&q=60" alt="写真（差し替え予定）">
+            <div class="caption">写真タップで拡大（ここは任意）</div>
+          </a>
+
           <div class="actions">
             <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">Googleマップ</a>
           </div>

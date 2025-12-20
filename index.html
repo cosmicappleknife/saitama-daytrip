@@ -50,6 +50,9 @@
     /* thumbnail */
     --thumb-h: 110px;
     --thumb-radius: 12px;
+
+    /* ✅ PC/iPadで横幅を制限（見切れ軽減の主役） */
+    --thumb-max-w: 520px;
   }
 
   body{
@@ -191,7 +194,7 @@
     border-right: var(--tail-size) solid var(--bubble-bg);
   }
 
-  /* ===== Thumbnail (WebP優先・JPGフォールバック：確実に表示する方式) ===== */
+  /* ===== Thumbnail (WebP優先・JPGフォールバック) ===== */
   .thumb{
     display:block;
     margin: 10px 0 10px 0;
@@ -200,12 +203,17 @@
     border: 1px solid rgba(0,0,0,.12);
     background: rgba(255,255,255,.65);
     text-decoration:none;
+
+    /* ✅ 横幅の上限（PC/iPadで効く。スマホは元々狭いので影響ほぼ無し） */
+    width: 100%;
+    max-width: var(--thumb-max-w);
   }
   .thumb img{
     display:block;
     width:100%;
     height: var(--thumb-h);
     object-fit: cover;
+    /* object-position: center; */
   }
 
   /* ===== Category colors ===== */
@@ -250,6 +258,13 @@
   .anchor .desc,
   .anchor .actions{ display:none; }
 
+  /* ✅ PC/iPad：サムネの高さを上げて、上下の見切れをさらに減らす */
+  @media (min-width: 768px){
+    :root{
+      --thumb-h: 170px;
+    }
+  }
+
   @media (max-width: 520px){
     :root{
       --time-col: 108px;
@@ -275,6 +290,8 @@
 
       --thumb-h: 84px;
       --thumb-radius: 11px;
+
+      /* スマホは横幅制限の影響ほぼなしなのでそのまま */
     }
     .anchor .dot{ top: 12px; }
   }
@@ -289,7 +306,7 @@
     <p>朝風呂 → B級グルメ町中華 → スイーツ工場直売所 → 肉屋惣菜</p>
     <div class="top-actions">
       <a class="btn"
-         href="https://www.google.com/maps/d/u/0/edit?mid=1LtEg0fzZxiQUp6uRsTT2oBN_aaOKpwU&usp=sharing"
+         href="https://www.google.com/maps/d/u/0/viewer?mid=1LtEg0fzZxiQUp6uRsTT2oBN_aaOKpwU&ll=35.838040580695875%2C139.67532014017343&z=12"
          target="_blank" rel="noopener">全体ルート（Googleマップ）</a>
     </div>
   </div>

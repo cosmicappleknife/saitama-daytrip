@@ -41,6 +41,10 @@
     --bubble-pad-x: 16px;
     --bubble-shadow: 0 10px 30px rgba(0,0,0,.06);
     --tail-size: 10px;
+
+    /* alignment (NEW): dot/time/bubble-tail vertical anchor */
+    --anchor-y: 26px;              /* ←ここを基準にそろえる */
+    --time-top-pad: 10px;          /* 時刻を下げる量（見た目を揃える） */
   }
 
   body{
@@ -120,16 +124,16 @@
     font-weight: 700;
     line-height: 1.2;
     white-space:nowrap;
-    padding-top: 2px;
+    padding-top: var(--time-top-pad); /* ←時刻を下げる */
   }
 
   .axis{ }
 
-  /* dot: centered on the same axis-x as the line */
+  /* dot: aligned to the SAME vertical anchor as the bubble tail */
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
-    top: 16px;
+    top: calc(var(--anchor-y) - (var(--dot-size) / 2));  /* ←中心を anchor-y に合わせる */
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
@@ -174,7 +178,7 @@
     vertical-align:middle;
   }
 
-  /* ===== Bubble (right side) ===== */
+  /* ===== Bubble ===== */
   .bubble{
     position:relative;
     background: var(--bubble-bg);
@@ -189,7 +193,7 @@
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size));
-    top: 22px;
+    top: calc(var(--anchor-y) - var(--tail-size)); /* ←尖りの中心を anchor-y に合わせる */
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -202,7 +206,7 @@
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size) + 1px);
-    top: 22px;
+    top: calc(var(--anchor-y) - var(--tail-size)); /* ←同じく anchor-y */
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -210,11 +214,10 @@
     border-right: var(--tail-size) solid var(--bubble-bg);
   }
 
-  /* tighten inside bubble */
   .bubble .title{ margin-bottom: 8px; }
   .bubble .actions{ margin-top: 12px; }
 
-  /* ===== category colors (stroke only; fill stays white) ===== */
+  /* ===== category colors (stroke only) ===== */
   .onsen  .dot{ border-color:#f39c12; }
   .chinese .dot{ border-color:#e74c3c; }
   .factory .dot{ border-color:#e84393; }
@@ -225,7 +228,6 @@
     --dot-size: 22px;
     --dot-stroke: 6px;
     border-color:#2ecc71;
-    top: 14px;
   }
 
   .anchor .badge{
@@ -234,7 +236,6 @@
     background:#f6fffb;
   }
 
-  /* anchor: no bubble, no desc/actions */
   .anchor .desc,
   .anchor .actions{ display:none; }
 
@@ -255,10 +256,10 @@
       --bubble-pad-y: 12px;
       --bubble-pad-x: 14px;
       --tail-size: 9px;
+
+      --anchor-y: 24px;      /* スマホでは少し締める */
+      --time-top-pad: 8px;   /* 時刻も追従 */
     }
-    .dot{ top: 14px; }
-    .anchor .dot{ top: 12px; }
-    .bubble::before, .bubble::after{ top: 18px; }
   }
 </style>
 </head>

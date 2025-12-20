@@ -47,7 +47,7 @@
     /* dot vertical adjustment */
     --dot-y-shift: 15px;
 
-    /* thumbnail (1 image per spot) */
+    /* thumbnail */
     --thumb-h: 110px;
     --thumb-radius: 12px;
   }
@@ -191,7 +191,7 @@
     border-right: var(--tail-size) solid var(--bubble-bg);
   }
 
-  /* ===== Thumbnail (WebP優先 + JPGフォールバック / 各スポット1枚) ===== */
+  /* ===== Thumbnail (WebP優先・JPGフォールバック：確実に表示する方式) ===== */
   .thumb{
     display:block;
     margin: 10px 0 10px 0;
@@ -201,12 +201,12 @@
     background: rgba(255,255,255,.65);
     text-decoration:none;
   }
-  .thumb picture, .thumb img{
+  .thumb img{
     display:block;
     width:100%;
     height: var(--thumb-h);
+    object-fit: cover;
   }
-  .thumb img{ object-fit: cover; }
 
   /* ===== Category colors ===== */
   .onsen{
@@ -230,13 +230,13 @@
   }
   .factory .dot{ border-color:#e84393; }
 
-  /* ✅ meat: yellow → brown (distinct from onsen) */
+  /* meat: brown */
   .meat{
-    --bubble-bg: #f3e7db;               /* 薄茶色 */
+    --bubble-bg: #f3e7db;
     --bubble-border: rgba(139, 69, 19, .22);
     --tail-border: rgba(139, 69, 19, .22);
   }
-  .meat .dot{ border-color:#8b4513; }   /* 茶色（白抜きは背景が白なのでそのまま） */
+  .meat .dot{ border-color:#8b4513; }
 
   /* ===== start/finish ===== */
   .anchor{ --dot-y-shift: 0px; }
@@ -250,7 +250,6 @@
   .anchor .desc,
   .anchor .actions{ display:none; }
 
-  /* ✅ Mobile: thumbnail smaller */
   @media (max-width: 520px){
     :root{
       --time-col: 108px;
@@ -315,10 +314,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/spa-herbs.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/spa-herbs.webp" type="image/webp">
-              <img src="assets/img/spa-herbs.jpg" alt="美楽温泉 SPA-HERBS" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/spa-herbs.webp" alt="美楽温泉 SPA-HERBS"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/spa-herbs.jpg';">
           </a>
 
           <div class="actions">
@@ -338,10 +336,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/manmantei.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/manmantei.webp" type="image/webp">
-              <img src="assets/img/manmantei.jpg" alt="漫々亭" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/manmantei.webp" alt="漫々亭"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/manmantei.jpg';">
           </a>
 
           <div class="actions">
@@ -361,10 +358,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/bummeido.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/bummeido.webp" type="image/webp">
-              <img src="assets/img/bummeido.jpg" alt="文明堂 さいたまあおぞら工房" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/bummeido.webp" alt="文明堂 さいたまあおぞら工房"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/bummeido.jpg';">
           </a>
 
           <div class="actions">
@@ -384,10 +380,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/funawa.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/funawa.webp" type="image/webp">
-              <img src="assets/img/funawa.jpg" alt="舟和 浜和工場直売店" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/funawa.webp" alt="舟和 浜和工場直売店"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/funawa.jpg';">
           </a>
 
           <div class="actions">
@@ -407,10 +402,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/sanke.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/sanke.webp" type="image/webp">
-              <img src="assets/img/sanke.jpg" alt="三恵商事（有）" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/sanke.webp" alt="三恵商事（有）"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/sanke.jpg';">
           </a>
 
           <div class="actions">
@@ -430,10 +424,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/kuritaro.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/kuritaro.webp" type="image/webp">
-              <img src="assets/img/kuritaro.jpg" alt="和菓子 くり太郎本舗 清月" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/kuritaro.webp" alt="和菓子 くり太郎本舗 清月"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/kuritaro.jpg';">
           </a>
 
           <div class="actions">
@@ -453,10 +446,9 @@
           <p class="desc">（ここはあなたが更新）</p>
 
           <a class="thumb" href="assets/img/meat-meguro.jpg" target="_blank" rel="noopener">
-            <picture>
-              <source srcset="assets/img/meat-meguro.webp" type="image/webp">
-              <img src="assets/img/meat-meguro.jpg" alt="ミート目黒" loading="lazy" decoding="async" fetchpriority="low">
-            </picture>
+            <img src="assets/img/meat-meguro.webp" alt="ミート目黒"
+                 loading="lazy" decoding="async" fetchpriority="low"
+                 onerror="this.onerror=null;this.src='assets/img/meat-meguro.jpg';">
           </a>
 
           <div class="actions">

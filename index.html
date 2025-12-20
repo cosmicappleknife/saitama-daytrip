@@ -42,9 +42,9 @@
     --bubble-shadow: 0 10px 30px rgba(0,0,0,.06);
     --tail-size: 10px;
 
-    /* alignment (NEW): dot/time/bubble-tail vertical anchor */
-    --anchor-y: 26px;              /* ←ここを基準にそろえる */
-    --time-top-pad: 10px;          /* 時刻を下げる量（見た目を揃える） */
+    /* alignment: ONE anchor controls time + dot + tail */
+    --anchor-y: 34px;               /* ← 下げる：ここを基準に全部揃う */
+    --time-anchor-offset: 10px;     /* ← 時刻の上端を anchor-y に合わせるための補正 */
   }
 
   body{
@@ -124,21 +124,20 @@
     font-weight: 700;
     line-height: 1.2;
     white-space:nowrap;
-    padding-top: var(--time-top-pad); /* ←時刻を下げる */
+    padding-top: calc(var(--anchor-y) - var(--time-anchor-offset)); /* ← dot/tailと同じ基準 */
   }
 
   .axis{ }
 
-  /* dot: aligned to the SAME vertical anchor as the bubble tail */
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
-    top: calc(var(--anchor-y) - (var(--dot-size) / 2));  /* ←中心を anchor-y に合わせる */
+    top: calc(var(--anchor-y) - (var(--dot-size) / 2));  /* ←中心が anchor-y */
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
-    background: #fff;
-    border: var(--dot-stroke) solid #333;
+    background: #fff;                         /* 白抜き */
+    border: var(--dot-stroke) solid #333;     /* 太線 */
     box-sizing: border-box;
     z-index: 2;
   }
@@ -188,12 +187,11 @@
     box-shadow: var(--bubble-shadow);
   }
 
-  /* tail with border */
   .bubble::before{
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size));
-    top: calc(var(--anchor-y) - var(--tail-size)); /* ←尖りの中心を anchor-y に合わせる */
+    top: calc(var(--anchor-y) - var(--tail-size)); /* ←尖りの中心が anchor-y */
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -201,12 +199,11 @@
     border-right: var(--tail-size) solid var(--bubble-border);
   }
 
-  /* tail fill */
   .bubble::after{
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size) + 1px);
-    top: calc(var(--anchor-y) - var(--tail-size)); /* ←同じく anchor-y */
+    top: calc(var(--anchor-y) - var(--tail-size)); /* ←同じ */
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -257,8 +254,8 @@
       --bubble-pad-x: 14px;
       --tail-size: 9px;
 
-      --anchor-y: 24px;      /* スマホでは少し締める */
-      --time-top-pad: 8px;   /* 時刻も追従 */
+      --anchor-y: 30px;            /* スマホでも同じく下げる */
+      --time-anchor-offset: 9px;
     }
   }
 </style>

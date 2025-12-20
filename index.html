@@ -42,9 +42,9 @@
     --bubble-shadow: 0 10px 30px rgba(0,0,0,.06);
     --tail-size: 10px;
 
-    /* alignment: ONE anchor controls time + dot + tail */
-    --anchor-y: 34px;               /* ← 下げる：ここを基準に全部揃う */
-    --time-anchor-offset: 10px;     /* ← 時刻の上端を anchor-y に合わせるための補正 */
+    /* alignment (bubble events) */
+    --time-pad: 24px;    /* 時刻の位置（現状維持） */
+    --time-line: 21px;   /* 1行の高さ（固定） */
   }
 
   body{
@@ -116,15 +116,18 @@
     grid-template-columns: var(--time-col) var(--axis-col) 1fr;
     column-gap: var(--gap);
     padding: 14px 0;
+
+    /* bubble events: dot/tail are aligned to time (single source of truth) */
+    --mark-y: calc(var(--time-pad) + (var(--time-line) / 2));
   }
 
   .time{
     text-align:right;
     font-size: var(--time-size);
     font-weight: 700;
-    line-height: 1.2;
     white-space:nowrap;
-    padding-top: calc(var(--anchor-y) - var(--time-anchor-offset)); /* ← dot/tailと同じ基準 */
+    padding-top: var(--time-pad);
+    line-height: var(--time-line);
   }
 
   .axis{ }
@@ -132,12 +135,12 @@
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
-    top: calc(var(--anchor-y) - (var(--dot-size) / 2));  /* ←中心が anchor-y */
+    top: calc(var(--mark-y) - (var(--dot-size) / 2));
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
-    background: #fff;                         /* 白抜き */
-    border: var(--dot-stroke) solid #333;     /* 太線 */
+    background: #fff;
+    border: var(--dot-stroke) solid #333;
     box-sizing: border-box;
     z-index: 2;
   }
@@ -191,7 +194,7 @@
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size));
-    top: calc(var(--anchor-y) - var(--tail-size)); /* ←尖りの中心が anchor-y */
+    top: calc(var(--mark-y) - var(--tail-size));
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -203,7 +206,7 @@
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size) + 1px);
-    top: calc(var(--anchor-y) - var(--tail-size)); /* ←同じ */
+    top: calc(var(--mark-y) - var(--tail-size));
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
@@ -220,11 +223,17 @@
   .factory .dot{ border-color:#e84393; }
   .meat   .dot{ border-color:#f1c40f; }
 
-  /* ===== start/finish ===== */
+  /* ===== start/finish (no bubble; revert to original height) ===== */
+  .anchor .time{
+    padding-top: 2px;
+    line-height: 1.2;
+  }
+
   .anchor .dot{
     --dot-size: 22px;
     --dot-stroke: 6px;
     border-color:#2ecc71;
+    top: 14px; /* 元々の高さへ */
   }
 
   .anchor .badge{
@@ -254,8 +263,12 @@
       --bubble-pad-x: 14px;
       --tail-size: 9px;
 
-      --anchor-y: 30px;            /* スマホでも同じく下げる */
-      --time-anchor-offset: 9px;
+      --time-pad: 22px;
+      --time-line: 20px;
+    }
+
+    .anchor .dot{
+      top: 12px;
     }
   }
 </style>

@@ -132,13 +132,11 @@
 
   .axis{ }
   
-  .dot{ top: calc(var(--mark-y) - (var(--dot-size) / 2) + 6px); }
-
-  /*
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
-    top: calc(var(--mark-y) - (var(--dot-size) / 2));
+    #top: calc(var(--mark-y) - (var(--dot-size) / 2));
+    top: calc(var(--mark-y) - (var(--dot-size) / 2) + 6px);
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
@@ -147,7 +145,6 @@
     box-sizing: border-box;
     z-index: 2;
   }
-  */
 
   .content{
     padding-bottom: 2px;

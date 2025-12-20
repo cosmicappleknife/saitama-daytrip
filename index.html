@@ -33,8 +33,7 @@
     --sub: #555;
     --line: #cfcfcf;
 
-    /* bubble */
-    --bubble-bg: #ffffff;
+    /* bubble geometry */
     --bubble-border: #e7e7e7;
     --bubble-radius: 18px;
     --bubble-pad-y: 14px;
@@ -42,9 +41,12 @@
     --bubble-shadow: 0 10px 30px rgba(0,0,0,.06);
     --tail-size: 10px;
 
-    /* alignment (bubble events) */
-    --time-pad: 24px;    /* 時刻の位置（現状維持） */
-    --time-line: 21px;   /* 1行の高さ（固定） */
+    /* time alignment for bubble events */
+    --time-pad: 24px;
+    --time-line: 21px;
+
+    /* ✅ dot vertical adjustment (your tuning) */
+    --dot-y-shift: 15px; /* ←丸ポチを下げる量 */
   }
 
   body{
@@ -81,7 +83,7 @@
   .btn{
     display:inline-block;
     padding:8px 12px;
-    border:1px solid #ddd;
+    border:1px solid rgba(0,0,0,.12);
     border-radius:12px;
     background:#fff;
     color:#111;
@@ -89,7 +91,7 @@
     font-size:.92rem;
     line-height:1.2;
   }
-  .btn:hover{ border-color:#bbb; }
+  .btn:hover{ border-color: rgba(0,0,0,.2); }
 
   /* ===== Timeline ===== */
   .timeline{
@@ -117,8 +119,13 @@
     column-gap: var(--gap);
     padding: 14px 0;
 
-    /* bubble events: dot/tail are aligned to time (single source of truth) */
+    /* bubble events: mark-y is the base vertical anchor (time + tail) */
     --mark-y: calc(var(--time-pad) + (var(--time-line) / 2));
+
+    /* bubble colors (defaults; overridden by category) */
+    --bubble-bg: #ffffff;
+    --bubble-border: rgba(0,0,0,.10);
+    --tail-border: var(--bubble-border);
   }
 
   .time{
@@ -131,12 +138,12 @@
   }
 
   .axis{ }
-  
+
+  /* dot: aligned to mark-y, then shifted down by your tuning */
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
-    #top: calc(var(--mark-y) - (var(--dot-size) / 2));
-    top: calc(var(--mark-y) - (var(--dot-size) / 2) + 15px);
+    top: calc(var(--mark-y) - (var(--dot-size) / 2) + var(--dot-y-shift));
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
@@ -191,18 +198,20 @@
     box-shadow: var(--bubble-shadow);
   }
 
+  /* tail with border */
   .bubble::before{
     content:"";
     position:absolute;
     left: calc(-1 * var(--tail-size));
-    top: calc(var(--mark-y) - var(--tail-size));
+    top: calc(var(--mark-y) - var(--tail-size)); /* tail aligns to mark-y */
     width: 0;
     height: 0;
     border-top: var(--tail-size) solid transparent;
     border-bottom: var(--tail-size) solid transparent;
-    border-right: var(--tail-size) solid var(--bubble-border);
+    border-right: var(--tail-size) solid var(--tail-border);
   }
 
+  /* tail fill */
   .bubble::after{
     content:"";
     position:absolute;
@@ -218,31 +227,54 @@
   .bubble .title{ margin-bottom: 8px; }
   .bubble .actions{ margin-top: 12px; }
 
-  /* ===== category colors (stroke only) ===== */
-  .onsen  .dot{ border-color:#f39c12; }
-  .chinese .dot{ border-color:#e74c3c; }
-  .factory .dot{ border-color:#e84393; }
-  .meat   .dot{ border-color:#f1c40f; }
+  /* ===== Category colors ===== */
+  .onsen{
+    --bubble-bg: #fff4e1;               /* 薄いオレンジ */
+    --bubble-border: rgba(243,156,18,.25);
+    --tail-border: rgba(243,156,18,.25);
+  }
+  .onsen .dot{ border-color:#f39c12; }
 
-  /* ===== start/finish (no bubble; revert to original height) ===== */
+  .chinese{
+    --bubble-bg: #ffe8e6;               /* 薄い赤 */
+    --bubble-border: rgba(231,76,60,.25);
+    --tail-border: rgba(231,76,60,.25);
+  }
+  .chinese .dot{ border-color:#e74c3c; }
+
+  .factory{
+    --bubble-bg: #ffe7f2;               /* 薄いピンク */
+    --bubble-border: rgba(232,67,147,.22);
+    --tail-border: rgba(232,67,147,.22);
+  }
+  .factory .dot{ border-color:#e84393; }
+
+  .meat{
+    --bubble-bg: #fff9d6;               /* 薄い黄色 */
+    --bubble-border: rgba(241,196,15,.25);
+    --tail-border: rgba(241,196,15,.25);
+  }
+  .meat .dot{ border-color:#f1c40f; }
+
+  /* ===== start/finish (no bubble; revert dot/time height) ===== */
+  .anchor{
+    --dot-y-shift: 0px;                 /* START/FINISH は元の高さへ戻す */
+  }
   .anchor .time{
     padding-top: 2px;
     line-height: 1.2;
   }
-
   .anchor .dot{
     --dot-size: 22px;
     --dot-stroke: 6px;
     border-color:#2ecc71;
-    top: 14px; /* 元々の高さへ */
+    top: 14px;                          /* 元々の高さ */
   }
-
   .anchor .badge{
     color:#2ecc71;
     border:1px solid #2ecc71;
     background:#f6fffb;
   }
-
   .anchor .desc,
   .anchor .actions{ display:none; }
 
@@ -266,8 +298,9 @@
 
       --time-pad: 22px;
       --time-line: 20px;
-    }
 
+      --dot-y-shift: 15px;              /* 同じく +15px */
+    }
     .anchor .dot{
       top: 12px;
     }
@@ -334,86 +367,4 @@
       <div class="axis"></div>
       <div class="content">
         <div class="bubble">
-          <div class="title">文明堂 さいたまあおぞら工房</div>
-          <p class="desc">工房併設の直売所。戦利品作りの核（滞在20分）。</p>
-          <div class="actions">
-            <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">Googleマップ</a>
-          </div>
-        </div>
-      </div>
-      <span class="dot" aria-hidden="true"></span>
-    </div>
-
-    <div class="event factory">
-      <div class="time">13:45–14:15</div>
-      <div class="axis"></div>
-      <div class="content">
-        <div class="bubble">
-          <div class="title">舟和 浜和工場直売店</div>
-          <p class="desc">和菓子直売の定番。品数前提で滞在長め（30分）。</p>
-          <div class="actions">
-            <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">Googleマップ</a>
-          </div>
-        </div>
-      </div>
-      <span class="dot" aria-hidden="true"></span>
-    </div>
-
-    <div class="event factory">
-      <div class="time">14:30–14:40</div>
-      <div class="axis"></div>
-      <div class="content">
-        <div class="bubble">
-          <div class="title">三恵商事（有）</div>
-          <p class="desc">ローカル直売枠。短時間で流す（10分）。</p>
-          <div class="actions">
-            <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">Googleマップ</a>
-          </div>
-        </div>
-      </div>
-      <span class="dot" aria-hidden="true"></span>
-    </div>
-
-    <div class="event factory">
-      <div class="time">14:55–15:05</div>
-      <div class="axis"></div>
-      <div class="content">
-        <div class="bubble">
-          <div class="title">和菓子 くり太郎本舗 清月</div>
-          <p class="desc">栗系和菓子の直営販売所。最終調整（10分）。</p>
-          <div class="actions">
-            <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">Googleマップ</a>
-          </div>
-        </div>
-      </div>
-      <span class="dot" aria-hidden="true"></span>
-    </div>
-
-    <div class="event meat">
-      <div class="time">15:35–15:45</div>
-      <div class="axis"></div>
-      <div class="content">
-        <div class="bubble">
-          <div class="title">ミート目黒</div>
-          <p class="desc">惣菜・精肉を購入して帰路へ（10分）。</p>
-          <div class="actions">
-            <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">Googleマップ</a>
-          </div>
-        </div>
-      </div>
-      <span class="dot" aria-hidden="true"></span>
-    </div>
-
-    <div class="event anchor">
-      <div class="time">16:30（帰着・仮）</div>
-      <div class="axis"></div>
-      <div class="content">
-        <div class="title">セブンイレブン（足立区新田）<span class="badge">FINISH</span></div>
-      </div>
-      <span class="dot" aria-hidden="true"></span>
-    </div>
-
-  </div>
-</div>
-</body>
-</html>
+          <div class="title">文明堂 さいたまあおぞら工房</

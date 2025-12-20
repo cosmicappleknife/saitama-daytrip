@@ -78,17 +78,16 @@
   }
   .btn:hover{ border-color:#bbb; }
 
-  /* ===== Timeline (single source of truth for axis X) ===== */
+  /* ===== Timeline ===== */
   .timeline{
     position:relative;
     margin-top:28px;
     padding: 6px 0 10px 0;
 
-    /* axis center X */
+    /* 軸の中心X（これを縦線と丸ポチの共通基準にする） */
     --axis-x: calc(var(--time-col) + (var(--axis-col) / 2));
   }
 
-  /* vertical line: centered on --axis-x */
   .timeline::before{
     content:"";
     position:absolute;
@@ -101,7 +100,7 @@
   }
 
   .event{
-    position:relative;
+    position:relative; /* ←丸ポチのabsolute基準 */
     display:grid;
     grid-template-columns: var(--time-col) var(--axis-col) 1fr;
     column-gap: var(--gap);
@@ -117,11 +116,10 @@
     padding-top: 2px;
   }
 
-  .axis{
-    position:relative;
-  }
+  /* 軸列は「スペーサー」。positionは付けない（重要） */
+  .axis{ }
 
-  /* dot: centered on --axis-x (exactly same reference as line) */
+  /* 丸ポチは event を基準に、縦線と同じ --axis-x に配置 */
   .dot{
     position:absolute;
     left: calc(var(--axis-x) - (var(--dot-size) / 2));
@@ -129,10 +127,10 @@
     width: var(--dot-size);
     height: var(--dot-size);
     border-radius: 999px;
-    background: #fff;                         /* white fill */
-    border: var(--dot-stroke) solid #333;     /* thick stroke */
+    background: #fff;                         /* 白抜き */
+    border: var(--dot-stroke) solid #333;     /* 太線 */
     box-sizing: border-box;
-    z-index: 2;                               /* above line */
+    z-index: 2;                               /* 縦線より前 */
   }
 
   .content{
@@ -190,13 +188,11 @@
     background:#f6fffb;
   }
 
-  /* anchor: no desc/actions */
   .anchor .desc,
   .anchor .actions{
     display:none;
   }
 
-  /* ===== responsive: keep same structure, just tighten columns ===== */
   @media (max-width: 520px){
     :root{
       --time-col: 108px;
@@ -231,15 +227,16 @@
 
     <div class="event anchor">
       <div class="time">07:30（出発）</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">セブンイレブン（足立区新田）<span class="badge">START</span></div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event onsen">
       <div class="time">09:00–11:00</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">美楽温泉 SPA-HERBS</div>
         <p class="desc">開店と同時に入館。朝風呂で一日の主導権を取る。</p>
@@ -247,11 +244,12 @@
           <a class="btn" href="https://maps.app.goo.gl/yRXu1KQXsDV8GBjGA" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event chinese">
       <div class="time">11:40–12:40</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">漫々亭（町中華）</div>
         <p class="desc">地元密着のB級町中華。ピークを外してゆったり昼食。</p>
@@ -259,11 +257,12 @@
           <a class="btn" href="https://maps.app.goo.gl/vdbY9KvF5XEhmTgi8" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event factory">
       <div class="time">13:10–13:30</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">文明堂 さいたまあおぞら工房</div>
         <p class="desc">工房併設の直売所。戦利品作りの核（滞在20分）。</p>
@@ -271,11 +270,12 @@
           <a class="btn" href="https://maps.app.goo.gl/LdjZTkw92he3PXUSA" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event factory">
       <div class="time">13:45–14:15</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">舟和 浜和工場直売店</div>
         <p class="desc">和菓子直売の定番。品数前提で滞在長め（30分）。</p>
@@ -283,11 +283,12 @@
           <a class="btn" href="https://maps.app.goo.gl/wN4ZDtJcYAgenmvQ9" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event factory">
       <div class="time">14:30–14:40</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">三恵商事（有）</div>
         <p class="desc">ローカル直売枠。短時間で流す（10分）。</p>
@@ -295,11 +296,12 @@
           <a class="btn" href="https://maps.app.goo.gl/8CH3nNRpQ1AeuPNV7" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event factory">
       <div class="time">14:55–15:05</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">和菓子 くり太郎本舗 清月</div>
         <p class="desc">栗系和菓子の直営販売所。最終調整（10分）。</p>
@@ -307,11 +309,12 @@
           <a class="btn" href="https://maps.app.goo.gl/wBKQxyanFuLy2w5y8" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event meat">
       <div class="time">15:35–15:45</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">ミート目黒</div>
         <p class="desc">惣菜・精肉を購入して帰路へ（10分）。</p>
@@ -319,14 +322,16 @@
           <a class="btn" href="https://maps.app.goo.gl/ucFSXq47yqNmZGNB9" target="_blank" rel="noopener">Googleマップ</a>
         </div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
     <div class="event anchor">
       <div class="time">16:30（帰着・仮）</div>
-      <div class="axis"><span class="dot" aria-hidden="true"></span></div>
+      <div class="axis"></div>
       <div class="content">
         <div class="title">セブンイレブン（足立区新田）<span class="badge">FINISH</span></div>
       </div>
+      <span class="dot" aria-hidden="true"></span>
     </div>
 
   </div>

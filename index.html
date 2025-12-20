@@ -4,25 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>埼玉デイトリップ｜温泉・町中華・直売所</title>
-
 <meta name="robots" content="noindex, nofollow">
 
 <style>
   :root{
     --wrap-max: 980px;
-    --time-col: 130px;
+
+    /* layout */
+    --time-col: 132px;
     --axis-col: 34px;
     --gap: 16px;
 
-    --line-color: #ccc;
-    --text-sub: #666;
-    --bg: #fafafa;
+    /* axis */
+    --axis-line-w: 2px;
 
-    --title-size: 1.08em;   /* 場所名と時刻を揃える */
-    --dot-size: 16px;       /* 通常ドット */
-    --dot-border: 5px;      /* 太めの白抜き線 */
-    --dot-border-anchor: 6px;
-    --axis-x: calc(var(--time-col) + (var(--axis-col) / 2));
+    /* dot (white fill, thick stroke) */
+    --dot-size: 18px;
+    --dot-stroke: 5px;
+
+    /* typography */
+    --title-size: 1.08rem;  /* 店名 */
+    --time-size:  1.08rem;  /* 時刻（店名と同サイズ） */
+    --desc-size:  0.95rem;
+
+    /* colors */
+    --bg: #fafafa;
+    --text: #111;
+    --sub: #555;
+    --line: #cfcfcf;
   }
 
   body{
@@ -30,7 +39,7 @@
     background:var(--bg);
     margin:0;
     padding:32px 0;
-    color:#111;
+    color:var(--text);
   }
 
   .wrap{
@@ -45,7 +54,7 @@
   }
   .header p{
     margin:0;
-    color:#555;
+    color:var(--sub);
     line-height:1.6;
   }
 
@@ -64,26 +73,31 @@
     background:#fff;
     color:#111;
     text-decoration:none;
-    font-size:.9em;
+    font-size:.92rem;
     line-height:1.2;
   }
   .btn:hover{ border-color:#bbb; }
 
-  /* ===== Timeline ===== */
+  /* ===== Timeline (single source of truth for axis X) ===== */
   .timeline{
     position:relative;
     margin-top:28px;
     padding: 6px 0 10px 0;
+
+    /* axis center X */
+    --axis-x: calc(var(--time-col) + (var(--axis-col) / 2));
   }
 
+  /* vertical line: centered on --axis-x */
   .timeline::before{
     content:"";
     position:absolute;
     top:0;
     bottom:0;
-    left: var(--axis-x);
-    width:2px;
-    background: var(--line-color);
+    left: calc(var(--axis-x) - (var(--axis-line-w) / 2));
+    width: var(--axis-line-w);
+    background: var(--line);
+    z-index: 0;
   }
 
   .event{
@@ -94,49 +108,47 @@
     padding: 14px 0;
   }
 
-  /* 左側時刻：場所名と同じ大きさ */
   .time{
     text-align:right;
-    font-size: var(--title-size);
-    color: var(--text-sub);
-    padding-top: 0;
-    white-space:nowrap;
-    font-weight: 600;
+    font-size: var(--time-size);
+    font-weight: 700;
     line-height: 1.2;
+    white-space:nowrap;
+    padding-top: 2px;
   }
 
   .axis{
     position:relative;
   }
 
-  /* 丸ポチ：縦軸の上にピタ合わせ（白抜き太線） */
+  /* dot: centered on --axis-x (exactly same reference as line) */
   .dot{
     position:absolute;
-    left: var(--axis-x);
+    left: calc(var(--axis-x) - (var(--dot-size) / 2));
     top: 16px;
-    transform: translateX(-50%);
     width: var(--dot-size);
     height: var(--dot-size);
-    border-radius: 50%;
-    background: #fff;
-    border: var(--dot-border) solid #333;
+    border-radius: 999px;
+    background: #fff;                         /* white fill */
+    border: var(--dot-stroke) solid #333;     /* thick stroke */
     box-sizing: border-box;
+    z-index: 2;                               /* above line */
   }
 
   .content{
-    padding-bottom: 4px;
+    padding-bottom: 2px;
   }
 
   .title{
     font-weight:700;
     font-size: var(--title-size);
-    margin:0 0 6px 0;
     line-height: 1.25;
+    margin:0 0 6px 0;
   }
 
   .desc{
     margin:0;
-    font-size:.95em;
+    font-size: var(--desc-size);
     line-height:1.65;
     color:#222;
   }
@@ -148,48 +160,54 @@
     flex-wrap:wrap;
   }
 
-  /* ===== Category colors (dot border color) ===== */
-  .onsen .dot{ border-color:#f39c12; }
-  .chinese .dot{ border-color:#e74c3c; }
-  .factory .dot{ border-color:#e84393; }
-  .meat .dot{ border-color:#f1c40f; } /* yellow */
-
-  /* ===== Anchor (start/finish) ===== */
-  .anchor .dot{
-    width: 20px;
-    height: 20px;
-    border-width: var(--dot-border-anchor);
-    border-color:#2ecc71;
-    top: 14px;
-  }
-
   .badge{
     display:inline-block;
     margin-left:8px;
     padding:2px 6px;
-    font-size:.75em;
+    font-size:.74rem;
     letter-spacing:.08em;
     border-radius:6px;
     vertical-align:middle;
+  }
+
+  /* ===== category colors (stroke only; fill stays white) ===== */
+  .onsen  .dot{ border-color:#f39c12; }
+  .chinese .dot{ border-color:#e74c3c; }
+  .factory .dot{ border-color:#e84393; }
+  .meat   .dot{ border-color:#f1c40f; }
+
+  /* ===== start/finish ===== */
+  .anchor .dot{
+    --dot-size: 22px;
+    --dot-stroke: 6px;
+    border-color:#2ecc71;
+    top: 14px;
+  }
+
+  .anchor .badge{
     color:#2ecc71;
     border:1px solid #2ecc71;
     background:#f6fffb;
   }
 
+  /* anchor: no desc/actions */
   .anchor .desc,
   .anchor .actions{
     display:none;
   }
 
-  /* ===== Mobile ===== */
+  /* ===== responsive: keep same structure, just tighten columns ===== */
   @media (max-width: 520px){
     :root{
-      --time-col: 92px;
+      --time-col: 108px;
       --axis-col: 30px;
       --gap: 12px;
-      --axis-x: calc(var(--time-col) + (var(--axis-col) / 2));
+      --title-size: 1.02rem;
+      --time-size:  1.02rem;
+      --desc-size:  0.93rem;
+      --dot-size: 16px;
+      --dot-stroke: 5px;
     }
-    .desc{ font-size:.93em; }
     .dot{ top: 14px; }
     .anchor .dot{ top: 12px; }
   }
@@ -202,13 +220,10 @@
   <div class="header">
     <h1>埼玉デイトリップ</h1>
     <p>朝風呂 → 町中華 → 直売所 → 精肉惣菜で締める（下道）</p>
-
     <div class="top-actions">
       <a class="btn"
          href="https://www.google.com/maps/d/u/0/viewer?mid=1LtEg0fzZxiQUp6uRsTT2oBN_aaOKpwU&ll=35.838040580695875%2C139.67532014017343&z=12"
-         target="_blank" rel="noopener">
-        全体ルート（Googleマップ）
-      </a>
+         target="_blank" rel="noopener">全体ルート（Googleマップ）</a>
     </div>
   </div>
 
